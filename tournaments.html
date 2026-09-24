@@ -6,6 +6,8 @@
   <title>Tournaments Hub - MAN CITY Club</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Supabase JS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-neutral-900 flex justify-center min-h-screen text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
 
@@ -70,22 +72,18 @@
           Fixtures & Results
         </button>
         <button onclick="switchView('teams')" id="subtab-teams" class="flex-1 pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-700 transition">
-          Registered Teams (<span id="team-count">4</span>)
+          Registered Teams (<span id="team-count">0</span>)
         </button>
       </div>
 
       <!-- FIXTURES LIST VIEW -->
       <div id="view-fixtures" class="space-y-3">
-        <div id="fixtures-container" class="space-y-3">
-          <!-- Dynamically populated -->
-        </div>
+        <div id="fixtures-container" class="space-y-3"></div>
       </div>
 
       <!-- TEAMS LIST VIEW -->
       <div id="view-teams" class="hidden space-y-2.5">
-        <div id="teams-container" class="space-y-2.5">
-          <!-- Dynamically populated -->
-        </div>
+        <div id="teams-container" class="space-y-2.5"></div>
       </div>
 
     </main>
@@ -96,7 +94,7 @@
         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
           <div>
             <h3 class="text-base font-black text-slate-900">Team Registration</h3>
-            <p id="modal-sport-title" class="text-xs text-sky-600 font-semibold">Football 7s Tournament</p>
+            <p id="modal-sport-title" class="text-xs text-sky-600 font-semibold">Tournament</p>
           </div>
           <button onclick="closeRegisterModal()" class="p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100">
             <i data-lucide="x" class="w-5 h-5"></i>
@@ -121,16 +119,14 @@
             </div>
             <div>
               <label class="font-bold text-slate-700 block mb-1">Ward / Locality *</label>
-              <input id="team-ward" type="text" required placeholder="e.g. Ward 14" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" />
+              <input id="team-ward" type="text" required placeholder="e.g. Ward 19" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" />
             </div>
           </div>
 
-          <p class="text-[10px] text-slate-400 pt-1 leading-relaxed">
-            * Submitting will open WhatsApp to deliver the team details directly to the Tournament Committee for fixture confirmation.
-          </p>
+          <div id="reg-feedback" class="hidden p-2.5 rounded-xl text-center text-xs font-bold"></div>
 
-          <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow transition flex items-center justify-center gap-2">
-            <i data-lucide="send" class="w-4 h-4"></i> Submit via WhatsApp
+          <button id="submit-btn" type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition flex items-center justify-center gap-2">
+            <i data-lucide="check-circle" class="w-4 h-4"></i> Submit Registration
           </button>
         </form>
       </div>
@@ -139,7 +135,12 @@
   </div>
 
   <script>
-    // TOURNAMENT DATA STORE
+    // SUPABASE SETUP
+    const SUPABASE_URL = "https://xbrpgpfabthotvbuqlhh.supabase.co";
+    // Replace with your Supabase anon public key:
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhicnBncGZhYnRob3R2YnVxbGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk1NDE4NDYsImV4cCI6MjEwNTExNzg0Nn0.Nz3N-2OFBQ3oFGpTJMxQNBNLbHJBvwnXU0afJO53c30";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     const tournamentData = {
       football: {
         title: "All-Kerala 7s Football Cup",
@@ -152,17 +153,11 @@
           { round: "Round of 16 (Match 1)", teamA: "Young Challengers", teamB: "Brothers FC", time: "Oct 25 • 07:30 PM", status: "Upcoming", score: "VS" },
           { round: "Round of 16 (Match 2)", teamA: "Town Team Areethala", teamB: "Evergreen Arts", time: "Oct 25 • 09:00 PM", status: "Upcoming", score: "VS" },
           { round: "Quarter Final", teamA: "Man City FC", teamB: "Winner M1", time: "Oct 27 • 08:00 PM", status: "Scheduled", score: "—" }
-        ],
-        teams: [
-          { name: "Young Challengers", ward: "Ward 14", captain: "Ramees K." },
-          { name: "Brothers FC", ward: "Ward 19", captain: "Suhail" },
-          { name: "Town Team Areethala", ward: "Ward 18", captain: "Niyas" },
-          { name: "Evergreen Arts", ward: "Ward 15", captain: "Farhan" }
         ]
       },
       cricket: {
         title: "Ward Premier League (WPL)",
-        badge: "Entries Closed",
+        badge: "Registration Open",
         fee: "Entry: ₹ 800",
         desc: "6-over tennis ball cricket clash between village wards.",
         date: "Nov 04 – 07",
@@ -170,11 +165,6 @@
         fixtures: [
           { round: "Group A (Match 1)", teamA: "Ward 14 Royals", teamB: "Ward 19 Strikers", time: "Nov 04 • 04:00 PM", status: "Upcoming", score: "VS" },
           { round: "Group B (Match 1)", teamA: "Areethala Blasters", teamB: "Town Super Kings", time: "Nov 05 • 04:00 PM", status: "Upcoming", score: "VS" }
-        ],
-        teams: [
-          { name: "Ward 14 Royals", ward: "Ward 14", captain: "Shameer" },
-          { name: "Ward 19 Strikers", ward: "Ward 19", captain: "Jamsheer" },
-          { name: "Areethala Blasters", ward: "Ward 18", captain: "Zubair" }
         ]
       },
       volleyball: {
@@ -186,16 +176,55 @@
         venue: "Man City Court",
         fixtures: [
           { round: "Qualifier Match 1", teamA: "Smashers Club", teamB: "United Spikers", time: "Dec 10 • 08:30 PM", status: "Upcoming", score: "VS" }
-        ],
-        teams: [
-          { name: "Smashers Club", ward: "Ward 14", captain: "Anas" },
-          { name: "United Spikers", ward: "Ward 17", captain: "Munveer" }
         ]
       }
     };
 
     let activeSport = 'football';
     let activeView = 'fixtures';
+
+    async function loadTeamsFromSupabase(sportKey) {
+      const teamsBox = document.getElementById('teams-container');
+      teamsBox.innerHTML = `<div class="p-4 text-center text-xs text-slate-400">Loading registered teams...</div>`;
+
+      const { data, error } = await supabaseClient
+        .from('tournament_registrations')
+        .select('*')
+        .eq('sport', sportKey)
+        .order('id', { ascending: true });
+
+      if (error) {
+        teamsBox.innerHTML = `<div class="p-3 text-xs text-red-500 text-center">Unable to load teams.</div>`;
+        return;
+      }
+
+      document.getElementById('team-count').innerText = data ? data.length : 0;
+
+      if (!data || data.length === 0) {
+        teamsBox.innerHTML = `
+          <div class="p-6 text-center text-xs text-slate-400 bg-slate-50 border border-dashed border-slate-200 rounded-2xl">
+            No teams registered yet for this tournament. Be the first to register!
+          </div>`;
+        return;
+      }
+
+      teamsBox.innerHTML = data.map((t, idx) => `
+        <div class="p-3 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-between text-xs">
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 rounded-xl bg-sky-100 text-sky-800 font-black flex items-center justify-center text-[11px]">
+              ${idx + 1}
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-900">${t.team_name}</h4>
+              <p class="text-[10px] text-slate-400">Captain: ${t.captain_name}</p>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 bg-slate-200/80 text-slate-600 text-[10px] font-bold rounded-lg">${t.ward}</span>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
 
     function renderSport(sportKey) {
       const data = tournamentData[sportKey];
@@ -205,8 +234,6 @@
       document.getElementById('cup-desc').innerText = data.desc;
       document.getElementById('cup-date').innerHTML = `<i data-lucide="calendar" class="w-3.5 h-3.5 text-sky-400"></i> ${data.date}`;
       document.getElementById('cup-venue').innerHTML = `<i data-lucide="map-pin" class="w-3.5 h-3.5 text-sky-400"></i> ${data.venue}`;
-      document.getElementById('team-count').innerText = data.teams.length;
-      document.getElementById('modal-sport-title').innerText = data.title;
 
       // Render Fixtures
       const fixturesBox = document.getElementById('fixtures-container');
@@ -228,23 +255,8 @@
         </div>
       `).join('');
 
-      // Render Teams
-      const teamsBox = document.getElementById('teams-container');
-      teamsBox.innerHTML = data.teams.map((t, idx) => `
-        <div class="p-3 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-between text-xs">
-          <div class="flex items-center gap-3">
-            <div class="w-7 h-7 rounded-xl bg-sky-100 text-sky-800 font-black flex items-center justify-center text-[11px]">
-              ${idx + 1}
-            </div>
-            <div>
-              <h4 class="font-bold text-slate-900">${t.name}</h4>
-              <p class="text-[10px] text-slate-400">Captain: ${t.captain}</p>
-            </div>
-          </div>
-          <span class="px-2 py-0.5 bg-slate-200/80 text-slate-600 text-[10px] font-bold rounded-lg">${t.ward}</span>
-        </div>
-      `).join('');
-
+      // Fetch dynamic registered teams from Supabase
+      loadTeamsFromSupabase(sportKey);
       lucide.createIcons();
     }
 
@@ -282,6 +294,9 @@
     }
 
     function openRegisterModal() {
+      // Ensure the modal title always matches the active tournament
+      document.getElementById('modal-sport-title').innerText = tournamentData[activeSport].title;
+      document.getElementById('reg-feedback').className = 'hidden';
       document.getElementById('reg-modal').classList.remove('hidden');
     }
 
@@ -289,22 +304,60 @@
       document.getElementById('reg-modal').classList.add('hidden');
     }
 
-    function handleRegistration(e) {
+    async function handleRegistration(e) {
       e.preventDefault();
+
+      const submitBtn = document.getElementById('submit-btn');
+      const feedback = document.getElementById('reg-feedback');
+
       const team = document.getElementById('team-name').value.trim();
       const captain = document.getElementById('captain-name').value.trim();
       const phone = document.getElementById('captain-phone').value.trim();
       const ward = document.getElementById('team-ward').value.trim();
       const sportTitle = tournamentData[activeSport].title;
 
-      // WhatsApp direct message to Tournament Coordinator (Vice President)
-      const message = `*NEW TOURNAMENT REGISTRATION*%0A%0A*Tournament:* ${encodeURIComponent(sportTitle)}%0A*Team:* ${encodeURIComponent(team)}%0A*Captain:* ${encodeURIComponent(captain)}%0A*Phone:* ${encodeURIComponent(phone)}%0A*Ward:* ${encodeURIComponent(ward)}`;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Submitting...`;
+      lucide.createIcons();
+
+      const { data, error } = await supabaseClient
+        .from('tournament_registrations')
+        .insert([
+          {
+            sport: activeSport,
+            tournament_title: sportTitle,
+            team_name: team,
+            captain_name: captain,
+            whatsapp: phone,
+            ward: ward
+          }
+        ]);
+
+      if (error) {
+        feedback.innerText = `Registration failed: ${error.message}`;
+        feedback.className = 'p-2.5 rounded-xl text-center text-xs font-bold bg-rose-50 text-rose-600 border border-rose-200';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> Submit Registration`;
+        lucide.createIcons();
+        return;
+      }
+
+      // Success
+      feedback.innerText = 'Team successfully registered with club committee!';
+      feedback.className = 'p-2.5 rounded-xl text-center text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200';
       
-      window.open(`https://wa.me/919876543213?text=${message}`, '_blank');
-      closeRegisterModal();
+      document.getElementById('team-form').reset();
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> Submit Registration`;
+      lucide.createIcons();
+
+      // Refresh registered teams list
+      setTimeout(() => {
+        closeRegisterModal();
+        loadTeamsFromSupabase(activeSport);
+      }, 1200);
     }
 
-    // Auto-select tab if URL has parameter (e.g. ?sport=cricket)
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const requestedSport = urlParams.get('sport');
