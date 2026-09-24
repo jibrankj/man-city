@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tournaments Hub - MAN CITY Club</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-neutral-900 flex justify-center min-h-screen text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
+
+  <div class="w-full max-w-md bg-white min-h-screen flex flex-col shadow-2xl relative pb-10">
+
+    <!-- TOP HEADER -->
+    <header class="px-5 pt-4 pb-3 flex items-center justify-between border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur z-20">
+      <a href="index.html" class="p-2 -ml-2 text-slate-500 hover:text-slate-800 transition flex items-center gap-1 text-xs font-semibold">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Home
+      </a>
+      <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Club Tournaments</span>
+      <img src="logo.png" alt="Club Logo" class="w-7 h-7 object-contain" />
+    </header>
+
+    <!-- SPORT SELECTOR PILLS -->
+    <div class="p-4 bg-slate-50 border-b border-slate-100 flex gap-2">
+      <button onclick="switchSport('football')" id="tab-football" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition bg-sky-600 text-white shadow-sm">
+        <img src="football logo.png" class="w-4 h-4 object-contain" /> Football
+      </button>
+      <button onclick="switchSport('cricket')" id="tab-cricket" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition bg-white text-slate-600 border border-slate-200">
+        <img src="cricket logo.png" class="w-4 h-4 object-contain" /> Cricket
+      </button>
+      <button onclick="switchSport('volleyball')" id="tab-volleyball" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition bg-white text-slate-600 border border-slate-200">
+        <img src="volleyball logo.png" class="w-4 h-4 object-contain" /> Volleyball
+      </button>
+    </div>
+
+    <!-- DYNAMIC SPORT CONTENT -->
+    <main class="p-5 space-y-5 flex-1 overflow-y-auto">
+
+      <!-- TOURNAMENT HERO BANNER -->
+      <div id="sport-hero" class="bg-gradient-to-br from-slate-950 via-slate-900 to-sky-950 text-white p-5 rounded-3xl shadow-lg relative overflow-hidden">
+        <div class="relative z-10 space-y-2">
+          <div class="flex items-center justify-between">
+            <span id="cup-badge" class="px-2.5 py-0.5 bg-sky-500/20 text-sky-400 border border-sky-400/30 text-[10px] font-bold rounded-full uppercase tracking-wider">
+              Registration Open
+            </span>
+            <span id="cup-fee" class="text-xs font-bold text-amber-400">Entry: ₹ 1,000</span>
+          </div>
+          <h1 id="cup-title" class="text-xl font-black tracking-tight leading-tight">All-Kerala 7s Football Cup</h1>
+          <p id="cup-desc" class="text-xs text-slate-300">Annual village floodlight tournament. Top 16 clubs competing for the prestigious trophy.</p>
+          
+          <div class="pt-2 flex items-center gap-4 text-[11px] text-slate-300 border-t border-white/10">
+            <span id="cup-date" class="flex items-center gap-1">
+              <i data-lucide="calendar" class="w-3.5 h-3.5 text-sky-400"></i> Oct 25 – 28
+            </span>
+            <span id="cup-venue" class="flex items-center gap-1">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-sky-400"></i> Man City Club Ground
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- REGISTER TEAM CTA BUTTON -->
+      <button onclick="openRegisterModal()" class="w-full py-3.5 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-500 hover:to-blue-600 text-white text-xs font-black uppercase tracking-wider rounded-2xl shadow-md transition flex items-center justify-center gap-2">
+        <i data-lucide="trophy" class="w-4 h-4"></i> Register Your Team
+      </button>
+
+      <!-- VIEW TOGGLES (FIXTURES / TEAMS) -->
+      <div class="flex border-b border-slate-200 text-xs font-bold">
+        <button onclick="switchView('fixtures')" id="subtab-fixtures" class="flex-1 pb-2.5 border-b-2 border-sky-600 text-sky-600 transition">
+          Fixtures & Results
+        </button>
+        <button onclick="switchView('teams')" id="subtab-teams" class="flex-1 pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-700 transition">
+          Registered Teams (<span id="team-count">4</span>)
+        </button>
+      </div>
+
+      <!-- FIXTURES LIST VIEW -->
+      <div id="view-fixtures" class="space-y-3">
+        <div id="fixtures-container" class="space-y-3">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- TEAMS LIST VIEW -->
+      <div id="view-teams" class="hidden space-y-2.5">
+        <div id="teams-container" class="space-y-2.5">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+    </main>
+
+    <!-- TEAM REGISTRATION MODAL -->
+    <div id="reg-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 space-y-4 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div>
+            <h3 class="text-base font-black text-slate-900">Team Registration</h3>
+            <p id="modal-sport-title" class="text-xs text-sky-600 font-semibold">Football 7s Tournament</p>
+          </div>
+          <button onclick="closeRegisterModal()" class="p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <form id="team-form" onsubmit="handleRegistration(event)" class="space-y-3 text-xs">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Club / Team Name *</label>
+            <input id="team-name" type="text" required placeholder="e.g. Red Star FC" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Captain / Manager Name *</label>
+            <input id="captain-name" type="text" required placeholder="Full Name" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">WhatsApp Number *</label>
+              <input id="captain-phone" type="tel" required placeholder="10-digit number" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Ward / Locality *</label>
+              <input id="team-ward" type="text" required placeholder="e.g. Ward 14" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" />
+            </div>
+          </div>
+
+          <p class="text-[10px] text-slate-400 pt-1 leading-relaxed">
+            * Submitting will open WhatsApp to deliver the team details directly to the Tournament Committee for fixture confirmation.
+          </p>
+
+          <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow transition flex items-center justify-center gap-2">
+            <i data-lucide="send" class="w-4 h-4"></i> Submit via WhatsApp
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // TOURNAMENT DATA STORE
+    const tournamentData = {
+      football: {
+        title: "All-Kerala 7s Football Cup",
+        badge: "Registration Open",
+        fee: "Entry: ₹ 1,000",
+        desc: "Annual 7-a-side floodlight tournament. 16 teams knockout championship.",
+        date: "Oct 25 – 28",
+        venue: "Man City Club Ground",
+        fixtures: [
+          { round: "Round of 16 (Match 1)", teamA: "Young Challengers", teamB: "Brothers FC", time: "Oct 25 • 07:30 PM", status: "Upcoming", score: "VS" },
+          { round: "Round of 16 (Match 2)", teamA: "Town Team Areethala", teamB: "Evergreen Arts", time: "Oct 25 • 09:00 PM", status: "Upcoming", score: "VS" },
+          { round: "Quarter Final", teamA: "Man City FC", teamB: "Winner M1", time: "Oct 27 • 08:00 PM", status: "Scheduled", score: "—" }
+        ],
+        teams: [
+          { name: "Young Challengers", ward: "Ward 14", captain: "Ramees K." },
+          { name: "Brothers FC", ward: "Ward 19", captain: "Suhail" },
+          { name: "Town Team Areethala", ward: "Ward 18", captain: "Niyas" },
+          { name: "Evergreen Arts", ward: "Ward 15", captain: "Farhan" }
+        ]
+      },
+      cricket: {
+        title: "Ward Premier League (WPL)",
+        badge: "Entries Closed",
+        fee: "Entry: ₹ 800",
+        desc: "6-over tennis ball cricket clash between village wards.",
+        date: "Nov 04 – 07",
+        venue: "High School Ground",
+        fixtures: [
+          { round: "Group A (Match 1)", teamA: "Ward 14 Royals", teamB: "Ward 19 Strikers", time: "Nov 04 • 04:00 PM", status: "Upcoming", score: "VS" },
+          { round: "Group B (Match 1)", teamA: "Areethala Blasters", teamB: "Town Super Kings", time: "Nov 05 • 04:00 PM", status: "Upcoming", score: "VS" }
+        ],
+        teams: [
+          { name: "Ward 14 Royals", ward: "Ward 14", captain: "Shameer" },
+          { name: "Ward 19 Strikers", ward: "Ward 19", captain: "Jamsheer" },
+          { name: "Areethala Blasters", ward: "Ward 18", captain: "Zubair" }
+        ]
+      },
+      volleyball: {
+        title: "Night Volleyball Trophy",
+        badge: "Registration Open",
+        fee: "Entry: ₹ 600",
+        desc: "High-octane night tournament on the newly renovated floodlit court.",
+        date: "Dec 10 – 11",
+        venue: "Man City Court",
+        fixtures: [
+          { round: "Qualifier Match 1", teamA: "Smashers Club", teamB: "United Spikers", time: "Dec 10 • 08:30 PM", status: "Upcoming", score: "VS" }
+        ],
+        teams: [
+          { name: "Smashers Club", ward: "Ward 14", captain: "Anas" },
+          { name: "United Spikers", ward: "Ward 17", captain: "Munveer" }
+        ]
+      }
+    };
+
+    let activeSport = 'football';
+    let activeView = 'fixtures';
+
+    function renderSport(sportKey) {
+      const data = tournamentData[sportKey];
+      document.getElementById('cup-title').innerText = data.title;
+      document.getElementById('cup-badge').innerText = data.badge;
+      document.getElementById('cup-fee').innerText = data.fee;
+      document.getElementById('cup-desc').innerText = data.desc;
+      document.getElementById('cup-date').innerHTML = `<i data-lucide="calendar" class="w-3.5 h-3.5 text-sky-400"></i> ${data.date}`;
+      document.getElementById('cup-venue').innerHTML = `<i data-lucide="map-pin" class="w-3.5 h-3.5 text-sky-400"></i> ${data.venue}`;
+      document.getElementById('team-count').innerText = data.teams.length;
+      document.getElementById('modal-sport-title').innerText = data.title;
+
+      // Render Fixtures
+      const fixturesBox = document.getElementById('fixtures-container');
+      fixturesBox.innerHTML = data.fixtures.map(f => `
+        <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-2xl space-y-2">
+          <div class="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase">
+            <span>${f.round}</span>
+            <span class="text-sky-600">${f.status}</span>
+          </div>
+          <div class="flex items-center justify-between font-black text-slate-800 text-xs py-1">
+            <span class="w-2/5 truncate">${f.teamA}</span>
+            <span class="w-1/5 text-center text-slate-400 text-[11px] font-bold">${f.score}</span>
+            <span class="w-2/5 truncate text-right">${f.teamB}</span>
+          </div>
+          <div class="text-[10px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-200/50">
+            <span>${f.time}</span>
+            <span class="text-emerald-600 font-semibold">Live Updates on Ground</span>
+          </div>
+        </div>
+      `).join('');
+
+      // Render Teams
+      const teamsBox = document.getElementById('teams-container');
+      teamsBox.innerHTML = data.teams.map((t, idx) => `
+        <div class="p-3 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-between text-xs">
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 rounded-xl bg-sky-100 text-sky-800 font-black flex items-center justify-center text-[11px]">
+              ${idx + 1}
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-900">${t.name}</h4>
+              <p class="text-[10px] text-slate-400">Captain: ${t.captain}</p>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 bg-slate-200/80 text-slate-600 text-[10px] font-bold rounded-lg">${t.ward}</span>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function switchSport(sport) {
+      activeSport = sport;
+      ['football', 'cricket', 'volleyball'].forEach(s => {
+        const btn = document.getElementById(`tab-${s}`);
+        if (s === sport) {
+          btn.className = "flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition bg-sky-600 text-white shadow-sm";
+        } else {
+          btn.className = "flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition bg-white text-slate-600 border border-slate-200";
+        }
+      });
+      renderSport(sport);
+    }
+
+    function switchView(view) {
+      activeView = view;
+      const fixturesBtn = document.getElementById('subtab-fixtures');
+      const teamsBtn = document.getElementById('subtab-teams');
+      const fixturesView = document.getElementById('view-fixtures');
+      const teamsView = document.getElementById('view-teams');
+
+      if (view === 'fixtures') {
+        fixturesBtn.className = "flex-1 pb-2.5 border-b-2 border-sky-600 text-sky-600 transition";
+        teamsBtn.className = "flex-1 pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-700 transition";
+        fixturesView.classList.remove('hidden');
+        teamsView.classList.add('hidden');
+      } else {
+        teamsBtn.className = "flex-1 pb-2.5 border-b-2 border-sky-600 text-sky-600 transition";
+        fixturesBtn.className = "flex-1 pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-700 transition";
+        teamsView.classList.remove('hidden');
+        fixturesView.classList.add('hidden');
+      }
+    }
+
+    function openRegisterModal() {
+      document.getElementById('reg-modal').classList.remove('hidden');
+    }
+
+    function closeRegisterModal() {
+      document.getElementById('reg-modal').classList.add('hidden');
+    }
+
+    function handleRegistration(e) {
+      e.preventDefault();
+      const team = document.getElementById('team-name').value.trim();
+      const captain = document.getElementById('captain-name').value.trim();
+      const phone = document.getElementById('captain-phone').value.trim();
+      const ward = document.getElementById('team-ward').value.trim();
+      const sportTitle = tournamentData[activeSport].title;
+
+      // WhatsApp direct message to Tournament Coordinator (Vice President)
+      const message = `*NEW TOURNAMENT REGISTRATION*%0A%0A*Tournament:* ${encodeURIComponent(sportTitle)}%0A*Team:* ${encodeURIComponent(team)}%0A*Captain:* ${encodeURIComponent(captain)}%0A*Phone:* ${encodeURIComponent(phone)}%0A*Ward:* ${encodeURIComponent(ward)}`;
+      
+      window.open(`https://wa.me/919876543213?text=${message}`, '_blank');
+      closeRegisterModal();
+    }
+
+    // Auto-select tab if URL has parameter (e.g. ?sport=cricket)
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedSport = urlParams.get('sport');
+      if (requestedSport && tournamentData[requestedSport]) {
+        switchSport(requestedSport);
+      } else {
+        renderSport('football');
+      }
+    });
+  </script>
+</body>
+</html>
