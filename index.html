@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Man City Arts & Sports Club</title>
-  <!-- App Icons & Manifest -->
+  <title>Man City Arts and Sports Club</title>
+
+  <!-- Mobile Web App & Home Screen Icons -->
   <link rel="icon" type="image/png" href="./logo.png" />
   <link rel="shortcut icon" href="./logo.png" />
   <link rel="apple-touch-icon" href="./logo.png" />
@@ -13,271 +14,318 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
 
-  <!-- Tailwind CSS via CDN -->
+  <!-- Tailwind CSS & Lucide Icons via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons via CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Supabase Client Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* Hide scrollbars for clean carousel look */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="bg-neutral-900 flex justify-center min-h-screen text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
 
-  <!-- Mobile App Container (Centered on desktop, full width on phones) -->
-  <div class="w-full max-w-md bg-white min-h-screen flex flex-col shadow-2xl relative pb-24">
+<body class="bg-slate-100 min-h-screen text-slate-800 antialiased selection:bg-sky-500 selection:text-white flex flex-col">
 
-    <!-- TOP HEADER -->
-    <header class="px-5 pt-4 pb-2 flex items-center justify-between">
-      <!-- Left: Logo and Club Title in One Line -->
-      <div class="flex items-center gap-3">
-        <img src="logo.png" alt="Man City Club Logo" class="w-12 h-12 object-contain" />
-        <div>
-          <h1 class="text-xl font-black text-slate-900 leading-tight">MAN CITY</h1>
-          <p class="text-xs font-semibold text-slate-500">Arts & Sports Club</p>
+  <!-- WRAPPER: Full width with max containment on large screens -->
+  <div class="w-full max-w-6xl mx-auto bg-white min-h-screen flex flex-col shadow-sm border-x border-slate-200/60 pb-20 md:pb-8">
+
+    <!-- DESKTOP & MOBILE HEADER -->
+    <header class="px-5 py-4 border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur z-30">
+      <div class="flex items-center justify-between">
+        <!-- Logo & Brand Name -->
+        <a href="index.html" class="flex items-center gap-3">
+         <img 
+  src="logo.png" 
+  alt="Club Logo" 
+  class="w-10 h-10 object-contain mix-blend-multiply contrast-[1.3] brightness-[1.08]" 
+/>
+          <div>
+            <h1 class="font-black text-slate-900 text-base md:text-lg leading-tight tracking-tight uppercase">MAN CITY</h1>
+            <p class="text-[11px] font-semibold text-sky-600 tracking-wider">Arts & Sports Club</p>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links (Visible on tablets & laptops) -->
+        <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-slate-600">
+          <a href="index.html" class="text-sky-600">Home</a>
+          <a href="#working-body" class="hover:text-sky-600 transition">Working Body</a>
+          <a href="tournaments.html?sport=football" class="hover:text-sky-600 transition">Tournaments</a>
+          <a href="#events" class="hover:text-sky-600 transition">Initiatives</a>
+          <button onclick="openVolunteerModal()" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-xl transition shadow-sm">
+            Volunteer
+          </button>
+        </nav>
+
+        <!-- Mobile Action Icons (Visible only on phones) -->
+        <div class="flex md:hidden items-center gap-2 text-slate-600">
+          <button onclick="openVolunteerModal()" class="p-2 hover:bg-slate-100 rounded-full transition" title="Volunteer">
+            <i data-lucide="hand-heart" class="w-5 h-5 text-sky-600"></i>
+          </button>
         </div>
-      </div>
-
-      <!-- Right: Compact Action Icons -->
-      <div class="flex items-center gap-2 text-slate-400">
-        <button class="p-1.5 hover:text-slate-700 transition">
-          <i data-lucide="search" class="w-5 h-5"></i>
-        </button>
-        <button class="p-1.5 hover:text-slate-700 transition">
-          <i data-lucide="bell" class="w-5 h-5"></i>
-        </button>
       </div>
     </header>
 
-    <!-- MAIN SCROLLABLE CONTENT -->
-    <main class="flex-1 overflow-y-auto px-5 space-y-6">
+    <!-- MAIN BODY CONTENT -->
+    <main class="flex-1 p-4 md:p-8 space-y-8">
 
-      <!-- SECTION 1: WORKING BODY -->
-      <section>
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1">
-            Working Body <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-400"></i>
+      <!-- SECTION 1: WORKING BODY (Mobile horizontal slider, Desktop 5-column grid) -->
+      <section id="working-body" class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xs md:text-sm font-black text-slate-900 tracking-wider uppercase flex items-center gap-1.5">
+            Working Body <i data-lucide="shield-check" class="w-4 h-4 text-sky-600"></i>
           </h2>
+          <span class="text-[11px] font-semibold text-slate-400">Term 2025–2027</span>
         </div>
 
-        <!-- Horizontal Committee Avatars -->
-        <div class="flex items-start gap-4 overflow-x-auto no-scrollbar pb-1">
-          <!-- President -->
-          <a href="president.html" class="flex flex-col items-center flex-shrink-0 w-16 text-center group cursor-pointer">
-            <div class="w-14 h-14 rounded-full bg-slate-100 group-hover:bg-sky-50 border border-slate-200 group-hover:border-sky-300 flex items-center justify-center text-slate-500 shadow-sm transition">
-              <i data-lucide="award" class="w-6 h-6 text-sky-600"></i>
+        <div class="grid grid-cols-5 gap-2 md:gap-4">
+          <!-- 1. President -->
+          <a href="president.html" class="flex flex-col items-center text-center p-2.5 rounded-2xl hover:bg-slate-50 transition group">
+            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-sky-50 border-2 border-sky-100 flex items-center justify-center text-sky-600 group-hover:scale-105 group-hover:border-sky-500 transition shadow-sm">
+              <i data-lucide="award" class="w-5 h-5 md:w-6 md:h-6"></i>
             </div>
-            <span class="text-[11px] font-semibold text-slate-700 mt-1.5 leading-tight">President</span>
+            <span class="text-[11px] md:text-xs font-bold text-slate-800 mt-2 truncate w-full">President</span>
+            <span class="text-[10px] text-slate-400 truncate w-full hidden sm:block">Gafoor Karadan</span>
           </a>
 
-          <!-- G.secretary -->
-          <a href="secretary.html" class="flex flex-col items-center flex-shrink-0 w-16 text-center group cursor-pointer">
-            <div class="w-14 h-14 rounded-full bg-slate-100 group-hover:bg-sky-50 border border-slate-200 group-hover:border-sky-300 flex items-center justify-center text-slate-500 shadow-sm transition">
-              <i data-lucide="file-text" class="w-6 h-6 text-sky-600"></i>
+          <!-- 2. General Secretary -->
+          <a href="secretary.html" class="flex flex-col items-center text-center p-2.5 rounded-2xl hover:bg-slate-50 transition group">
+            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-emerald-50 border-2 border-emerald-100 flex items-center justify-center text-emerald-600 group-hover:scale-105 group-hover:border-emerald-500 transition shadow-sm">
+              <i data-lucide="file-text" class="w-5 h-5 md:w-6 md:h-6"></i>
             </div>
-            <span class="text-[11px] font-semibold text-slate-700 mt-1.5 leading-tight">G.Secretary</span>
+            <span class="text-[11px] md:text-xs font-bold text-slate-800 mt-2 truncate w-full">Gen.Secretary</span>
+            <span class="text-[10px] text-slate-400 truncate w-full hidden sm:block">Hameed K</span>
           </a>
 
-          <!-- Treasurer -->
-          <a href="treasurer.html" class="flex flex-col items-center flex-shrink-0 w-16 text-center group cursor-pointer">
-            <div class="w-14 h-14 rounded-full bg-slate-100 group-hover:bg-sky-50 border border-slate-200 group-hover:border-sky-300 flex items-center justify-center text-slate-500 shadow-sm transition">
-              <i data-lucide="coins" class="w-6 h-6 text-sky-600"></i>
+          <!-- 3. Treasurer -->
+          <a href="treasurer.html" class="flex flex-col items-center text-center p-2.5 rounded-2xl hover:bg-slate-50 transition group">
+            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-amber-50 border-2 border-amber-100 flex items-center justify-center text-amber-600 group-hover:scale-105 group-hover:border-amber-500 transition shadow-sm">
+              <i data-lucide="coins" class="w-5 h-5 md:w-6 md:h-6"></i>
             </div>
-            <span class="text-[11px] font-semibold text-slate-700 mt-1.5 leading-tight">Treasurer</span>
+            <span class="text-[11px] md:text-xs font-bold text-slate-800 mt-2 truncate w-full">Treasurer</span>
+            <span class="text-[10px] text-slate-400 truncate w-full hidden sm:block">Munawar K</span>
           </a>
 
-          <!-- V.President -->
-          <a href="vpresident.html" class="flex flex-col items-center flex-shrink-0 w-16 text-center group cursor-pointer">
-            <div class="w-14 h-14 rounded-full bg-slate-100 group-hover:bg-sky-50 border border-slate-200 group-hover:border-sky-300 flex items-center justify-center text-slate-500 shadow-sm transition">
-              <i data-lucide="shield" class="w-6 h-6 text-slate-500"></i>
+          <!-- 4. Vice President -->
+          <a href="vpresident.html" class="flex flex-col items-center text-center p-2.5 rounded-2xl hover:bg-slate-50 transition group">
+            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-purple-50 border-2 border-purple-100 flex items-center justify-center text-purple-600 group-hover:scale-105 group-hover:border-purple-500 transition shadow-sm">
+              <i data-lucide="shield" class="w-5 h-5 md:w-6 md:h-6"></i>
             </div>
-            <span class="text-[11px] font-semibold text-slate-700 mt-1.5 leading-tight">V.President</span>
+            <span class="text-[11px] md:text-xs font-bold text-slate-800 mt-2 truncate w-full">V.President</span>
+            <span class="text-[10px] text-slate-400 truncate w-full hidden sm:block">Ali K</span>
           </a>
 
-          <!-- J.Secretary -->
-          <a href="jsecretary.html" class="flex flex-col items-center flex-shrink-0 w-16 text-center group cursor-pointer">
-            <div class="w-14 h-14 rounded-full bg-slate-100 group-hover:bg-sky-50 border border-slate-200 group-hover:border-sky-300 flex items-center justify-center text-slate-500 shadow-sm transition">
-              <i data-lucide="clipboard-list" class="w-6 h-6 text-slate-500"></i>
+          <!-- 5. Joint Secretary -->
+          <a href="jsecretary.html" class="flex flex-col items-center text-center p-2.5 rounded-2xl hover:bg-slate-50 transition group">
+            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-rose-50 border-2 border-rose-100 flex items-center justify-center text-rose-600 group-hover:scale-105 group-hover:border-rose-500 transition shadow-sm">
+              <i data-lucide="clipboard-list" class="w-5 h-5 md:w-6 md:h-6"></i>
             </div>
-            <span class="text-[11px] font-semibold text-slate-700 mt-1.5 leading-tight">J.Secretary</span>
+            <span class="text-[11px] md:text-xs font-bold text-slate-800 mt-2 truncate w-full">J.Secretary</span>
+            <span class="text-[10px] text-slate-400 truncate w-full hidden sm:block">Hassan</span>
           </a>
         </div>
       </section>
 
-      <!-- SECTION 2: EVENTS (FEATURED BANNER) -->
-      <section>
-        <div class="flex items-center justify-between mb-2.5">
-          <h2 class="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1">
-            Events <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-400"></i>
-          </h2>
-        </div>
+      <!-- SECTION 2: HERO BANNER (FEATURED INITIATIVE) -->
+      <section id="events" class="relative rounded-3xl overflow-hidden bg-slate-950 text-white shadow-xl">
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-sky-950/80 z-10"></div>
+        <img src="https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&q=80&w=1200" alt="Health Camp" class="absolute inset-0 w-full h-full object-cover opacity-35" />
 
-        <div class="flex gap-3 overflow-x-auto no-scrollbar">
-          <!-- Featured Card 1 -->
-          <div class="relative w-full flex-shrink-0 rounded-2xl overflow-hidden bg-slate-900 text-white shadow-md">
-            <img src="https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&w=700&q=80" alt="Blood Camp" class="w-full h-44 object-cover opacity-70" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-4">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-sky-400">Upcoming Initiative</span>
-              <h3 class="text-base font-bold leading-tight mt-0.5">Mega Blood Donation & Health Camp</h3>
-              <p class="text-xs text-slate-300 mt-0.5">Club Ground Auditorium • Oct 18</p>
-              <button onclick="openModal('Mega Blood Donation & Health Camp')" class="mt-2.5 w-full py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-bold transition shadow">
-                Volunteer / Register
-              </button>
+        <div class="relative z-20 p-6 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="space-y-3 max-w-xl">
+            <span class="px-3 py-1 bg-sky-500/20 text-sky-400 border border-sky-400/30 text-[10px] md:text-xs font-black rounded-full uppercase tracking-wider">
+              Upcoming Initiative
+            </span>
+            <h3 class="text-xl md:text-3xl font-black tracking-tight leading-tight">
+              Mega Blood Donation & Free Medical Camp
+            </h3>
+            <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
+              In association with District Blood Bank and Taluk Hospital. Doctors, lab screening, and blood group profiling available for all residents.
+            </p>
+            <div class="flex items-center gap-4 text-xs text-sky-300 font-semibold pt-1">
+              <span class="flex items-center gap-1.5"><i data-lucide="calendar" class="w-4 h-4"></i> Oct 18, 2026</span>
+              <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4"></i> Club Ground Auditorium</span>
             </div>
           </div>
 
-          <!-- Peek Card 2 -->
-          <div class="relative w-20 flex-shrink-0 rounded-2xl overflow-hidden bg-slate-200">
-            <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=300&q=80" class="w-full h-44 object-cover opacity-60" />
+          <div class="flex flex-col sm:flex-row md:flex-col gap-3 min-w-[200px]">
+            <button onclick="openVolunteerModal()" class="w-full py-3.5 px-6 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs md:text-sm rounded-2xl shadow-lg transition text-center flex items-center justify-center gap-2">
+              <i data-lucide="heart-handshake" class="w-4 h-4"></i> Volunteer Now
+            </button>
+            <a href="https://wa.me/918129033925?text=Inquiry%20regarding%20Blood%20Donation%20Camp" target="_blank" class="w-full py-3.5 px-6 bg-white/10 hover:bg-white/20 backdrop-blur text-white font-bold text-xs md:text-sm rounded-2xl border border-white/20 transition text-center flex items-center justify-center gap-2">
+              <i data-lucide="phone-call" class="w-4 h-4"></i> Contact Organizer
+            </a>
           </div>
         </div>
       </section>
 
-      <!-- SECTION 3: TOURNAMENTS -->
-      <section>
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1">
-            Tournaments <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-400"></i>
-          </h2>
-        </div>
+      <!-- SECTION 3 & 4: DUAL-COLUMN DESKTOP GRID (Tournaments + Cultural Programmes) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-        <div class="grid grid-cols-3 gap-3">
-        <!-- 1. Football -->
-        <a href="tournaments.html?sport=football" class="bg-slate-100 hover:bg-sky-50 transition rounded-2xl p-3 flex flex-col items-center justify-center text-center aspect-square group cursor-pointer border border-transparent hover:border-sky-200">
-          <div class="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-sm mb-1.5 p-2 border border-slate-100 group-hover:scale-105 transition">
-            <img src="football logo.png" alt="Football" class="w-full h-full object-contain" />
+        <!-- LEFT COLUMN (5 Cols on Desktop): TOURNAMENTS -->
+        <section class="lg:col-span-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <h2 class="text-xs md:text-sm font-black text-slate-900 tracking-wider uppercase flex items-center gap-1.5">
+              Tournaments Hub <i data-lucide="trophy" class="w-4 h-4 text-sky-600"></i>
+            </h2>
+            <a href="tournaments.html?sport=football" class="text-xs font-bold text-sky-600 hover:underline">View All</a>
           </div>
-          <span class="text-xs font-bold text-slate-800">Football</span>
-          <span class="text-[10px] text-slate-500 group-hover:text-sky-600 font-medium">7s Cup</span>
-        </a>
 
-        <!-- 2. Cricket -->
-        <a href="tournaments.html?sport=cricket" class="bg-slate-100 hover:bg-sky-50 transition rounded-2xl p-3 flex flex-col items-center justify-center text-center aspect-square group cursor-pointer border border-transparent hover:border-sky-200">
-          <div class="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-sm mb-1.5 p-2 border border-slate-100 group-hover:scale-105 transition">
-            <img src="cricket logo.png" alt="Cricket" class="w-full h-full object-contain" />
-          </div>
-          <span class="text-xs font-bold text-slate-800">Cricket</span>
-          <span class="text-[10px] text-slate-500 group-hover:text-sky-600 font-medium">League</span>
-        </a>
+          <div class="grid grid-cols-3 gap-3">
+            <!-- 1. Football -->
+            <a href="tournaments.html?sport=football" class="bg-slate-50 hover:bg-sky-50/80 border border-slate-200/80 hover:border-sky-300 rounded-2xl p-4 flex flex-col items-center justify-center text-center aspect-square group transition shadow-sm">
+              <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm mb-2 p-2 group-hover:scale-110 transition">
+                <img src="football logo.png" alt="Football" class="w-full h-full object-contain" />
+              </div>
+              <span class="text-xs font-bold text-slate-800">Football</span>
+              <span class="text-[10px] text-sky-600 font-semibold mt-0.5">7s League</span>
+            </a>
 
-        <!-- 3. Volleyball -->
-        <a href="tournaments.html?sport=volleyball" class="bg-slate-100 hover:bg-sky-50 transition rounded-2xl p-3 flex flex-col items-center justify-center text-center aspect-square group cursor-pointer border border-transparent hover:border-sky-200">
-          <div class="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-sm mb-1.5 p-2 border border-slate-100 group-hover:scale-105 transition">
-            <img src="volleyball logo.png" alt="Volleyball" class="w-full h-full object-contain" />
+            <!-- 2. Cricket -->
+            <a href="tournaments.html?sport=cricket" class="bg-slate-50 hover:bg-sky-50/80 border border-slate-200/80 hover:border-sky-300 rounded-2xl p-4 flex flex-col items-center justify-center text-center aspect-square group transition shadow-sm">
+              <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm mb-2 p-2 group-hover:scale-110 transition">
+                <img src="cricket logo.png" alt="Cricket" class="w-full h-full object-contain" />
+              </div>
+              <span class="text-xs font-bold text-slate-800">Cricket</span>
+              <span class="text-[10px] text-sky-600 font-semibold mt-0.5">Mutti-4 League</span>
+            </a>
+
+            <!-- 3. Volleyball -->
+            <a href="tournaments.html?sport=volleyball" class="bg-slate-50 hover:bg-sky-50/80 border border-slate-200/80 hover:border-sky-300 rounded-2xl p-4 flex flex-col items-center justify-center text-center aspect-square group transition shadow-sm">
+              <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm mb-2 p-2 group-hover:scale-110 transition">
+                <img src="volleyball logo.png" alt="Volleyball" class="w-full h-full object-contain" />
+              </div>
+              <span class="text-xs font-bold text-slate-800">Volleyball</span>
+              <span class="text-[10px] text-sky-600 font-semibold mt-0.5">Evening League</span>
+            </a>
           </div>
-          <span class="text-xs font-bold text-slate-800">Volleyball</span>
-          <span class="text-[10px] text-slate-500 group-hover:text-sky-600 font-medium">Night Cup</span>
-        </a>
+
+          <div class="p-4 bg-sky-50 border border-sky-100 rounded-2xl text-xs text-sky-900 flex items-center justify-between">
+            <div class="space-y-0.5">
+              <p class="font-bold">Team Registrations Open</p>
+              <p class="text-[11px] text-sky-700">Click any sport to see fixtures & submit teams.</p>
+            </div>
+            <i data-lucide="chevron-right" class="w-5 h-5 text-sky-500"></i>
+          </div>
+        </section>
+
+        <!-- RIGHT COLUMN (7 Cols on Desktop): CULTURAL & COMMUNITY -->
+        <section class="lg:col-span-7 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <h2 class="text-xs md:text-sm font-black text-slate-900 tracking-wider uppercase flex items-center gap-1.5">
+              Cultural & Social Drives <i data-lucide="sparkles" class="w-4 h-4 text-sky-600"></i>
+            </h2>
+            <span class="text-[11px] font-semibold text-slate-400">Village Welfare</span>
+          </div>
+
+          <div class="space-y-3">
+            <!-- Event Card 1 -->
+            <div class="p-4 bg-slate-50 border border-slate-200/80 hover:border-slate-300 rounded-2xl flex items-center gap-4 transition shadow-sm">
+              <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=200" alt="Cultural Night" class="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover" />
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-bold rounded-md uppercase">Cultural</span>
+                  <span class="text-[11px] text-slate-400 font-medium">Nov 15, 2026</span>
+                </div>
+                <h4 class="font-bold text-slate-900 text-sm mt-1 truncate">Annual Village Fest & Arts Night</h4>
+                <p class="text-xs text-slate-500 line-clamp-1">Folk dance, stage plays, songs, and youth cultural showcases.</p>
+              </div>
+            </div>
+
+            <!-- Event Card 2 -->
+            <div class="p-4 bg-slate-50 border border-slate-200/80 hover:border-slate-300 rounded-2xl flex items-center gap-4 transition shadow-sm">
+              <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=200" alt="Clean Drive" class="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover" />
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded-md uppercase">Ecology</span>
+                  <span class="text-[11px] text-slate-400 font-medium">Every Saturday</span>
+                </div>
+                <h4 class="font-bold text-slate-900 text-sm mt-1 truncate">Canal Cleaning & Green Drive</h4>
+                <p class="text-xs text-slate-500 line-clamp-1">Planting fruit saplings and water canal upkeep with local youth.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
-      </section>
-
-      <!-- SECTION 4: CULTURAL PROGRAMMES -->
-      <section>
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1">
-            Cultural Programmes <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-400"></i>
-          </h2>
-        </div>
-
-        <div class="space-y-3">
-          <!-- Item 1 -->
-          <div class="flex items-center gap-3 p-2.5 rounded-2xl hover:bg-slate-50 transition border border-slate-100 shadow-sm">
-            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=150&q=80" class="w-14 h-14 rounded-xl object-cover flex-shrink-0" />
-            <div class="flex-1 min-w-0">
-              <h3 class="text-xs font-bold text-slate-900 truncate leading-snug">Annual Village Fest & Arts Night</h3>
-              <p class="text-[11px] text-slate-500 truncate mt-0.5">Folk dance, songs, and youth stage plays.</p>
-              <div class="flex items-center gap-1 text-[10px] text-slate-400 mt-1">
-                <i data-lucide="clock" class="w-3 h-3"></i> Nov 15 • Community Stage
-              </div>
-            </div>
-            <button onclick="openModal('Annual Village Fest & Arts Night')" class="p-1 text-slate-400 hover:text-sky-600 transition">
-              <i data-lucide="chevron-right" class="w-5 h-5"></i>
-            </button>
-          </div>
-
-          <!-- Item 2 -->
-          <div class="flex items-center gap-3 p-2.5 rounded-2xl hover:bg-slate-50 transition border border-slate-100 shadow-sm">
-            <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=150&q=80" class="w-14 h-14 rounded-xl object-cover flex-shrink-0" />
-            <div class="flex-1 min-w-0">
-              <h3 class="text-xs font-bold text-slate-900 truncate leading-snug">Canal Cleaning & Green Drive</h3>
-              <p class="text-[11px] text-slate-500 truncate mt-0.5">100 fruit saplings planting with local youth.</p>
-              <div class="flex items-center gap-1 text-[10px] text-slate-400 mt-1">
-                <i data-lucide="clock" class="w-3 h-3"></i> Saturday • Junction Walkway
-              </div>
-            </div>
-            <button onclick="openModal('Canal Cleaning & Green Drive')" class="p-1 text-slate-400 hover:text-sky-600 transition">
-              <i data-lucide="chevron-right" class="w-5 h-5"></i>
-            </button>
-          </div>
-        </div>
-      </section>
 
     </main>
 
-    <!-- FIXED BOTTOM NAVIGATION BAR -->
-    <nav class="fixed sm:absolute bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur border-t border-slate-200 px-6 py-2.5 flex items-center justify-around z-30">
-      <!-- Home Tab -->
-      <button class="flex flex-col items-center gap-0.5 text-sky-600">
-        <div class="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center">
-          <i data-lucide="home" class="w-4 h-4"></i>
-        </div>
-        <span class="text-[10px] font-bold">Home</span>
-      </button>
+    <!-- DESKTOP FOOTER (Clean footer for wide screens) -->
+    <footer class="hidden md:flex items-center justify-between px-8 py-5 border-t border-slate-100 text-xs text-slate-400 mt-6">
+      <p>© 2026 Man City Arts & Sports Club. Developed for Village Community.</p>
+      <div class="flex items-center gap-4 font-semibold text-slate-600">
+        <a href="president.html" class="hover:text-sky-600">President</a>
+        <a href="tournaments.html?sport=football" class="hover:text-sky-600">Tournaments</a>
+        <a href="tournaments.html?sport=cricket" class="hover:text-sky-600">Cricket League</a>
+      </div>
+    </footer>
 
-      <!-- Programmes Tab -->
-      <button class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-slate-800 transition">
-        <div class="w-8 h-8 flex items-center justify-center">
-          <i data-lucide="calendar" class="w-4 h-4"></i>
-        </div>
-        <span class="text-[10px] font-medium">Events</span>
-      </button>
-
-      <!-- Sports Tab -->
-      <button class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-slate-800 transition">
-        <div class="w-8 h-8 flex items-center justify-center">
-          <i data-lucide="trophy" class="w-4 h-4"></i>
-        </div>
-        <span class="text-[10px] font-medium">Sports</span>
+    <!-- MOBILE BOTTOM NAVIGATION (Hidden on Desktop) -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur border-t border-slate-200 flex justify-around items-center py-2.5">
+      <a href="index.html" class="flex flex-col items-center text-sky-600 font-bold text-[10px]">
+        <i data-lucide="home" class="w-5 h-5"></i>
+        <span>Home</span>
+      </a>
+      <a href="#events" class="flex flex-col items-center text-slate-400 hover:text-slate-700 text-[10px]">
+        <i data-lucide="calendar" class="w-5 h-5"></i>
+        <span>Events</span>
+      </a>
+      <a href="tournaments.html?sport=football" class="flex flex-col items-center text-slate-400 hover:text-slate-700 text-[10px]">
+        <i data-lucide="trophy" class="w-5 h-5"></i>
+        <span>Sports</span>
+      </a>
+      <button onclick="openVolunteerModal()" class="flex flex-col items-center text-slate-400 hover:text-slate-700 text-[10px]">
+        <i data-lucide="heart" class="w-5 h-5"></i>
+        <span>Volunteer</span>
       </button>
     </nav>
 
     <!-- VOLUNTEER REGISTRATION MODAL -->
-    <div id="volunteer-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-      <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl relative">
-        <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-
-        <div class="text-left">
-          <span class="text-[10px] font-bold text-sky-600 uppercase tracking-wider">Volunteer Sign-up</span>
-          <h3 id="modal-event-title" class="text-base font-bold text-slate-900 mt-1 leading-tight">Event Title</h3>
-          <p class="text-xs text-slate-500 mt-1">Leave your details for the MAN CITY committee.</p>
+    <div id="volunteer-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 space-y-4 shadow-2xl animate-in fade-in duration-200">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div>
+            <h3 class="text-base font-black text-slate-900">Volunteer Registration</h3>
+            <p class="text-xs text-sky-600 font-semibold">Join the Club Community </p>
+          </div>
+          <button onclick="closeVolunteerModal()" class="p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
         </div>
 
-        <form class="mt-4 space-y-3" onsubmit="handleVolunteerSubmit(event)">
+        <form id="volunteer-form" onsubmit="handleVolunteerSubmit(event)" class="space-y-3 text-xs">
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Your Full Name</label>
-            <input id="volunteer-name" type="text" required placeholder="e.g. Salman Faris" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500" />
+            <label class="font-bold text-slate-700 block mb-1">Full Name *</label>
+            <input id="v-name" type="text" required placeholder="Your full name" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" />
           </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">WhatsApp No. *</label>
+              <input id="v-phone" type="tel" required placeholder="10-digit number" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Place*</label>
+              <input id="v-ward" type="text" required placeholder="e.g. Ward 14" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" />
+            </div>
+          </div>
+
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">WhatsApp Number</label>
-            <input id="volunteer-phone" type="tel" required placeholder="+91 98765 43210" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500" />
+            <label class="font-bold text-slate-700 block mb-1">Interest Area *</label>
+            <select id="v-area" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium">
+              <option value="Health & Blood Donation">Health & Blood Donation Camp</option>
+              <option value="Sports & Tournament Org">Sports & Tournament Committee</option>
+              <option value="Social & Eco Cleaning">Social Welfare & Tree Plantation</option>
+              <option value="Cultural Fest Team">Cultural Fest Team</option>
+            </select>
           </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Village Ward / Area</label>
-            <input id="volunteer-ward" type="text" placeholder="e.g. Ward 19, Areethala" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500" />
-          </div>
-          <button type="submit" class="w-full py-2.5 bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold rounded-xl shadow transition mt-2">
-            Confirm Volunteering
+
+          <div id="v-feedback" class="hidden p-2.5 rounded-xl text-center text-xs font-bold"></div>
+
+          <button id="v-submit-btn" type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition flex items-center justify-center gap-2">
+            <i data-lucide="check-circle" class="w-4 h-4"></i> Submit as Volunteer
           </button>
         </form>
       </div>
@@ -285,58 +333,57 @@
 
   </div>
 
-  <!-- JAVASCRIPT & SUPABASE LOGIC -->
   <script>
-    // 1. Initialize Icons
-    lucide.createIcons();
+    // Supabase Setup
+    const SUPABASE_URL = "https://xbrpgpfabthotvbuqlhh.supabase.co";
+    // Replace with your real Supabase anon key:
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhicnBncGZhYnRob3R2YnVxbGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk1NDE4NDYsImV4cCI6MjEwNTExNzg0Nn0.Nz3N-2OFBQ3oFGpTJMxQNBNLbHJBvwnXU0afJO53c30";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // 2. Modal Controls
-    function openModal(eventTitle) {
-      document.getElementById('modal-event-title').innerText = eventTitle;
+    function openVolunteerModal() {
+      document.getElementById('v-feedback').className = 'hidden';
       document.getElementById('volunteer-modal').classList.remove('hidden');
     }
 
-    function closeModal() {
+    function closeVolunteerModal() {
       document.getElementById('volunteer-modal').classList.add('hidden');
     }
 
-    // 3. Supabase Configuration
-    const SUPABASE_URL = "https://xbrpgpfabthotvbuqlhh.supabase.co";
-    // Keep your anon key inside the quotes below:
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhicnBncGZhYnRob3R2YnVxbGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk1NDE4NDYsImV4cCI6MjEwNTExNzg0Nn0.Nz3N-2OFBQ3oFGpTJMxQNBNLbHJBvwnXU0afJO53c30";
+    async function handleVolunteerSubmit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('v-submit-btn');
+      const feedback = document.getElementById('v-feedback');
 
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const name = document.getElementById('v-name').value.trim();
+      const phone = document.getElementById('v-phone').value.trim();
+      const ward = document.getElementById('v-ward').value.trim();
+      const area = document.getElementById('v-area').value;
 
-    // 4. Save Volunteer Form Submission
-    async function handleVolunteerSubmit(event) {
-      event.preventDefault();
-
-      const eventTitle = document.getElementById('modal-event-title').innerText;
-      const fullName = document.getElementById('volunteer-name').value;
-      const whatsapp = document.getElementById('volunteer-phone').value;
-      const ward = document.getElementById('volunteer-ward').value;
-
-      const submitButton = event.target.querySelector('button[type="submit"]');
-      submitButton.innerText = "Saving to database...";
-      submitButton.disabled = true;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Submitting...`;
+      lucide.createIcons();
 
       const { data, error } = await supabaseClient
         .from('volunteers')
-        .insert([
-          { event_title: eventTitle, full_name: fullName, whatsapp: whatsapp, ward: ward }
-        ]);
+        .insert([{ full_name: name, whatsapp: phone, ward: ward, interest: area }]);
 
       if (error) {
-        alert("Database Error: " + error.message);
+        feedback.innerText = `Registration failed: ${error.message}`;
+        feedback.className = 'p-2.5 rounded-xl text-center text-xs font-bold bg-rose-50 text-rose-600 border border-rose-200';
       } else {
-        alert("Success! Your volunteer registration has been saved.");
-        closeModal();
-        event.target.reset();
+        feedback.innerText = 'Thank you! You are registered as an official volunteer.';
+        feedback.className = 'p-2.5 rounded-xl text-center text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200';
+        document.getElementById('volunteer-form').reset();
+        setTimeout(closeVolunteerModal, 1500);
       }
 
-      submitButton.innerText = "Confirm Volunteering";
-      submitButton.disabled = false;
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> Submit as Volunteer`;
+      lucide.createIcons();
     }
+
+    // Initialize Lucide Icons
+    lucide.createIcons();
   </script>
 </body>
 </html>

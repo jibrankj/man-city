@@ -6,89 +6,116 @@
   <title>Tournaments Hub - MAN CITY Club</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Supabase JS Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body class="bg-neutral-900 flex justify-center min-h-screen text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
 
-  <div class="w-full max-w-md bg-white min-h-screen flex flex-col shadow-2xl relative pb-10">
+  <!-- PREVENT SCROLLBAR JUMP / EXTRA SPACE -->
+  <style>
+    html {
+      overflow-y: scroll;
+      scrollbar-gutter: stable;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 antialiased selection:bg-sky-500 selection:text-white flex flex-col">
+
+  <div class="w-full max-w-5xl mx-auto bg-white min-h-screen flex flex-col shadow-sm border-x border-slate-200/60 pb-16">
 
     <!-- TOP HEADER -->
-    <header class="px-5 pt-4 pb-3 flex items-center justify-between border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur z-20">
-      <a href="index.html" class="p-2 -ml-2 text-slate-500 hover:text-slate-800 transition flex items-center gap-1 text-xs font-semibold">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i> Home
-      </a>
-      <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Club Tournaments</span>
-      <img src="logo.png" alt="Club Logo" class="w-7 h-7 object-contain" />
+    <header class="px-5 md:px-8 py-4 flex items-center justify-between border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur z-30">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="p-2 -ml-2 text-slate-500 hover:text-slate-800 transition flex items-center gap-1.5 text-xs md:text-sm font-bold">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> Home
+        </a>
+      </div>
+      <span class="text-xs md:text-sm font-black text-slate-400 uppercase tracking-widest">Club Tournaments</span>
+      <img 
+  src="logo.png" 
+  alt="Club Logo" 
+  class="w-10 h-10 object-contain mix-blend-multiply contrast-[1.3] brightness-[1.08]" 
+/>
     </header>
 
-    <!-- SPORT SELECTOR PILLS -->
-    <div class="p-4 bg-slate-50 border-b border-slate-100 flex gap-2">
-      <button onclick="switchSport('football')" id="tab-football" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition bg-sky-600 text-white shadow-sm">
-        <img src="football logo.png" class="w-4 h-4 object-contain" /> Football
+    <!-- SPORT SELECTOR TABS -->
+    <div class="p-4 md:px-8 bg-slate-50 border-b border-slate-100 grid grid-cols-3 gap-3 md:gap-4">
+      <button onclick="switchSport('football')" id="tab-football" class="w-full py-3 px-4 rounded-2xl text-xs md:text-sm font-bold flex items-center justify-center gap-2 transition bg-sky-600 text-white shadow-sm">
+        <img src="football logo.png" class="w-5 h-5 object-contain" /> Football
       </button>
-      <button onclick="switchSport('cricket')" id="tab-cricket" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition bg-white text-slate-600 border border-slate-200">
-        <img src="cricket logo.png" class="w-4 h-4 object-contain" /> Cricket
+      <button onclick="switchSport('cricket')" id="tab-cricket" class="w-full py-3 px-4 rounded-2xl text-xs md:text-sm font-bold flex items-center justify-center gap-2 transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">
+        <img src="cricket logo.png" class="w-5 h-5 object-contain" /> Cricket
       </button>
-      <button onclick="switchSport('volleyball')" id="tab-volleyball" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition bg-white text-slate-600 border border-slate-200">
-        <img src="volleyball logo.png" class="w-4 h-4 object-contain" /> Volleyball
+      <button onclick="switchSport('volleyball')" id="tab-volleyball" class="w-full py-3 px-4 rounded-2xl text-xs md:text-sm font-bold flex items-center justify-center gap-2 transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">
+        <img src="volleyball logo.png" class="w-5 h-5 object-contain" /> Volleyball
       </button>
     </div>
 
-    <!-- DYNAMIC SPORT CONTENT -->
-    <main class="p-5 space-y-5 flex-1 overflow-y-auto">
+    <!-- MAIN CONTAINER -->
+    <main class="p-5 md:p-8 space-y-6 flex-1">
 
-      <!-- TOURNAMENT HERO BANNER -->
-      <div id="sport-hero" class="bg-gradient-to-br from-slate-950 via-slate-900 to-sky-950 text-white p-5 rounded-3xl shadow-lg relative overflow-hidden">
-        <div class="relative z-10 space-y-2">
-          <div class="flex items-center justify-between">
-            <span id="cup-badge" class="px-2.5 py-0.5 bg-sky-500/20 text-sky-400 border border-sky-400/30 text-[10px] font-bold rounded-full uppercase tracking-wider">
+      <!-- HERO BANNER -->
+      <div id="sport-hero" class="bg-gradient-to-br from-slate-950 via-slate-900 to-sky-950 text-white p-6 md:p-8 rounded-3xl shadow-lg relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="relative z-10 space-y-2 max-w-2xl">
+          <div class="flex items-center gap-3">
+            <span id="cup-badge" class="px-3 py-1 bg-sky-500/20 text-sky-400 border border-sky-400/30 text-[10px] md:text-xs font-bold rounded-full uppercase tracking-wider">
               Registration Open
             </span>
-            <span id="cup-fee" class="text-xs font-bold text-amber-400">Entry: ₹ 1,000</span>
+            <span id="cup-fee" class="text-xs md:text-sm font-bold text-amber-400">Entry: ₹ 350</span>
           </div>
-          <h1 id="cup-title" class="text-xl font-black tracking-tight leading-tight">All-Kerala 7s Football Cup</h1>
-          <p id="cup-desc" class="text-xs text-slate-300">Annual village floodlight tournament. Top 16 clubs competing for the prestigious trophy.</p>
+          <h1 id="cup-title" class="text-xl md:text-3xl font-black tracking-tight leading-tight">MCFL</h1>
+          <p id="cup-desc" class="text-xs md:text-sm text-slate-300">Annual  floodlight tournament.</p>
           
-          <div class="pt-2 flex items-center gap-4 text-[11px] text-slate-300 border-t border-white/10">
-            <span id="cup-date" class="flex items-center gap-1">
-              <i data-lucide="calendar" class="w-3.5 h-3.5 text-sky-400"></i> Oct 25 – 28
+          <div class="pt-3 flex items-center gap-6 text-xs text-slate-300 border-t border-white/10">
+            <span id="cup-date" class="flex items-center gap-1.5">
+              <i data-lucide="calendar" class="w-4 h-4 text-sky-400"></i> Oct 25 – 28
             </span>
-            <span id="cup-venue" class="flex items-center gap-1">
-              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-sky-400"></i> Man City Club Ground
+            <span id="cup-venue" class="flex items-center gap-1.5">
+              <i data-lucide="map-pin" class="w-4 h-4 text-sky-400"></i> Anfield Football Turf
             </span>
           </div>
         </div>
-      </div>
 
-      <!-- REGISTER TEAM CTA BUTTON -->
-      <button onclick="openRegisterModal()" class="w-full py-3.5 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-500 hover:to-blue-600 text-white text-xs font-black uppercase tracking-wider rounded-2xl shadow-md transition flex items-center justify-center gap-2">
-        <i data-lucide="trophy" class="w-4 h-4"></i> Register Your Team
-      </button>
-
-      <!-- VIEW TOGGLES (FIXTURES / TEAMS) -->
-      <div class="flex border-b border-slate-200 text-xs font-bold">
-        <button onclick="switchView('fixtures')" id="subtab-fixtures" class="flex-1 pb-2.5 border-b-2 border-sky-600 text-sky-600 transition">
-          Fixtures & Results
-        </button>
-        <button onclick="switchView('teams')" id="subtab-teams" class="flex-1 pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-700 transition">
-          Registered Teams (<span id="team-count">0</span>)
+        <button onclick="openRegisterModal()" class="py-3.5 px-6 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-500 hover:to-blue-600 text-white text-xs md:text-sm font-black uppercase tracking-wider rounded-2xl shadow-lg transition flex items-center justify-center gap-2 whitespace-nowrap">
+          <i data-lucide="trophy" class="w-4 h-4"></i> Register Team
         </button>
       </div>
 
-      <!-- FIXTURES LIST VIEW -->
-      <div id="view-fixtures" class="space-y-3">
-        <div id="fixtures-container" class="space-y-3"></div>
-      </div>
+      <!-- DESKTOP SPLIT VIEW: FIXTURES (LEFT) & REGISTERED TEAMS (RIGHT) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-2">
 
-      <!-- TEAMS LIST VIEW -->
-      <div id="view-teams" class="hidden space-y-2.5">
-        <div id="teams-container" class="space-y-2.5"></div>
+        <!-- FIXTURES COLUMN (7 cols on desktop) -->
+        <section class="lg:col-span-7 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <h2 class="text-xs md:text-sm font-black text-slate-900 tracking-wider uppercase flex items-center gap-1.5">
+              Fixtures & Results <i data-lucide="calendar-days" class="w-4 h-4 text-sky-600"></i>
+            </h2>
+            <span class="text-[11px] text-slate-400 font-semibold">Official Match Schedule</span>
+          </div>
+
+          <div id="fixtures-container" class="space-y-3">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- REGISTERED TEAMS COLUMN (5 cols on desktop) -->
+        <section class="lg:col-span-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <h2 class="text-xs md:text-sm font-black text-slate-900 tracking-wider uppercase flex items-center gap-1.5">
+              Registered Teams (<span id="team-count">0</span>) <i data-lucide="users" class="w-4 h-4 text-sky-600"></i>
+            </h2>
+            <button onclick="openRegisterModal()" class="text-xs font-bold text-sky-600 hover:underline">
+              + Register
+            </button>
+          </div>
+
+          <div id="teams-container" class="space-y-2.5">
+            <!-- Dynamically populated from Supabase -->
+          </div>
+        </section>
+
       </div>
 
     </main>
 
-    <!-- TEAM REGISTRATION MODAL -->
+    <!-- REGISTRATION MODAL -->
     <div id="reg-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 space-y-4 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -135,20 +162,18 @@
   </div>
 
   <script>
-    // SUPABASE SETUP
     const SUPABASE_URL = "https://xbrpgpfabthotvbuqlhh.supabase.co";
-    // Replace with your Supabase anon public key:
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhicnBncGZhYnRob3R2YnVxbGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk1NDE4NDYsImV4cCI6MjEwNTExNzg0Nn0.Nz3N-2OFBQ3oFGpTJMxQNBNLbHJBvwnXU0afJO53c30";
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const tournamentData = {
       football: {
-        title: "All-Kerala 7s Football Cup",
+        title: "MCFL SEASON-5",
         badge: "Registration Open",
-        fee: "Entry: ₹ 1,000",
-        desc: "Annual 7-a-side floodlight tournament. 16 teams knockout championship.",
+        fee: "Entry: ₹ 350",
+        desc: "Man City Football League",
         date: "Oct 25 – 28",
-        venue: "Man City Club Ground",
+        venue: "Anfield Football Turf",
         fixtures: [
           { round: "Round of 16 (Match 1)", teamA: "Young Challengers", teamB: "Brothers FC", time: "Oct 25 • 07:30 PM", status: "Upcoming", score: "VS" },
           { round: "Round of 16 (Match 2)", teamA: "Town Team Areethala", teamB: "Evergreen Arts", time: "Oct 25 • 09:00 PM", status: "Upcoming", score: "VS" },
@@ -156,24 +181,24 @@
         ]
       },
       cricket: {
-        title: "Ward Premier League (WPL)",
+        title: "MCCL SEASON-2",
         badge: "Registration Open",
-        fee: "Entry: ₹ 800",
-        desc: "6-over tennis ball cricket clash between village wards.",
+        fee: "Entry: ₹ 550",
+        desc: "Man City Cricket League",
         date: "Nov 04 – 07",
-        venue: "High School Ground",
+        venue: "Anfield Football Turf",
         fixtures: [
           { round: "Group A (Match 1)", teamA: "Ward 14 Royals", teamB: "Ward 19 Strikers", time: "Nov 04 • 04:00 PM", status: "Upcoming", score: "VS" },
           { round: "Group B (Match 1)", teamA: "Areethala Blasters", teamB: "Town Super Kings", time: "Nov 05 • 04:00 PM", status: "Upcoming", score: "VS" }
         ]
       },
       volleyball: {
-        title: "Night Volleyball Trophy",
+        title: "MCVL SEASON-1",
         badge: "Registration Open",
-        fee: "Entry: ₹ 600",
-        desc: "High-octane night tournament on the newly renovated floodlit court.",
+        fee: "Entry: ₹ 300",
+        desc: "Man City Volleyball League",
         date: "Dec 10 – 11",
-        venue: "Man City Court",
+        venue: "Ministadium",
         fixtures: [
           { round: "Qualifier Match 1", teamA: "Smashers Club", teamB: "United Spikers", time: "Dec 10 • 08:30 PM", status: "Upcoming", score: "VS" }
         ]
@@ -181,7 +206,6 @@
     };
 
     let activeSport = 'football';
-    let activeView = 'fixtures';
 
     async function loadTeamsFromSupabase(sportKey) {
       const teamsBox = document.getElementById('teams-container');
@@ -194,7 +218,7 @@
         .order('id', { ascending: true });
 
       if (error) {
-        teamsBox.innerHTML = `<div class="p-3 text-xs text-red-500 text-center">Unable to load teams.</div>`;
+        teamsBox.innerHTML = `<div class="p-3 text-xs text-rose-500 text-center">Unable to load teams.</div>`;
         return;
       }
 
@@ -203,13 +227,13 @@
       if (!data || data.length === 0) {
         teamsBox.innerHTML = `
           <div class="p-6 text-center text-xs text-slate-400 bg-slate-50 border border-dashed border-slate-200 rounded-2xl">
-            No teams registered yet for this tournament. Be the first to register!
+            No teams registered yet. Be the first to register!
           </div>`;
         return;
       }
 
       teamsBox.innerHTML = data.map((t, idx) => `
-        <div class="p-3 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-between text-xs">
+        <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-between text-xs">
           <div class="flex items-center gap-3">
             <div class="w-7 h-7 rounded-xl bg-sky-100 text-sky-800 font-black flex items-center justify-center text-[11px]">
               ${idx + 1}
@@ -219,7 +243,7 @@
               <p class="text-[10px] text-slate-400">Captain: ${t.captain_name}</p>
             </div>
           </div>
-          <span class="px-2 py-0.5 bg-slate-200/80 text-slate-600 text-[10px] font-bold rounded-lg">${t.ward}</span>
+          <span class="px-2.5 py-0.5 bg-slate-200/80 text-slate-600 text-[10px] font-bold rounded-lg">${t.ward}</span>
         </div>
       `).join('');
 
@@ -235,27 +259,25 @@
       document.getElementById('cup-date').innerHTML = `<i data-lucide="calendar" class="w-3.5 h-3.5 text-sky-400"></i> ${data.date}`;
       document.getElementById('cup-venue').innerHTML = `<i data-lucide="map-pin" class="w-3.5 h-3.5 text-sky-400"></i> ${data.venue}`;
 
-      // Render Fixtures
       const fixturesBox = document.getElementById('fixtures-container');
       fixturesBox.innerHTML = data.fixtures.map(f => `
-        <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-2xl space-y-2">
-          <div class="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase">
+        <div class="p-4 bg-slate-50 border border-slate-200/80 rounded-2xl space-y-2.5">
+          <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase">
             <span>${f.round}</span>
             <span class="text-sky-600">${f.status}</span>
           </div>
-          <div class="flex items-center justify-between font-black text-slate-800 text-xs py-1">
+          <div class="flex items-center justify-between font-black text-slate-800 text-sm py-1">
             <span class="w-2/5 truncate">${f.teamA}</span>
-            <span class="w-1/5 text-center text-slate-400 text-[11px] font-bold">${f.score}</span>
+            <span class="w-1/5 text-center text-slate-400 text-xs font-bold">${f.score}</span>
             <span class="w-2/5 truncate text-right">${f.teamB}</span>
           </div>
-          <div class="text-[10px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-200/50">
+          <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-200/50">
             <span>${f.time}</span>
             <span class="text-emerald-600 font-semibold">Live Updates on Ground</span>
           </div>
         </div>
       `).join('');
 
-      // Fetch dynamic registered teams from Supabase
       loadTeamsFromSupabase(sportKey);
       lucide.createIcons();
     }
@@ -265,36 +287,15 @@
       ['football', 'cricket', 'volleyball'].forEach(s => {
         const btn = document.getElementById(`tab-${s}`);
         if (s === sport) {
-          btn.className = "flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition bg-sky-600 text-white shadow-sm";
+          btn.className = "w-full py-3 px-4 rounded-2xl text-xs md:text-sm font-bold flex items-center justify-center gap-2 transition bg-sky-600 text-white shadow-sm";
         } else {
-          btn.className = "flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition bg-white text-slate-600 border border-slate-200";
+          btn.className = "w-full py-3 px-4 rounded-2xl text-xs md:text-sm font-bold flex items-center justify-center gap-2 transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-50";
         }
       });
       renderSport(sport);
     }
 
-    function switchView(view) {
-      activeView = view;
-      const fixturesBtn = document.getElementById('subtab-fixtures');
-      const teamsBtn = document.getElementById('subtab-teams');
-      const fixturesView = document.getElementById('view-fixtures');
-      const teamsView = document.getElementById('view-teams');
-
-      if (view === 'fixtures') {
-        fixturesBtn.className = "flex-1 pb-2.5 border-b-2 border-sky-600 text-sky-600 transition";
-        teamsBtn.className = "flex-1 pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-700 transition";
-        fixturesView.classList.remove('hidden');
-        teamsView.classList.add('hidden');
-      } else {
-        teamsBtn.className = "flex-1 pb-2.5 border-b-2 border-sky-600 text-sky-600 transition";
-        fixturesBtn.className = "flex-1 pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-700 transition";
-        teamsView.classList.remove('hidden');
-        fixturesView.classList.add('hidden');
-      }
-    }
-
     function openRegisterModal() {
-      // Ensure the modal title always matches the active tournament
       document.getElementById('modal-sport-title').innerText = tournamentData[activeSport].title;
       document.getElementById('reg-feedback').className = 'hidden';
       document.getElementById('reg-modal').classList.remove('hidden');
@@ -306,7 +307,6 @@
 
     async function handleRegistration(e) {
       e.preventDefault();
-
       const submitBtn = document.getElementById('submit-btn');
       const feedback = document.getElementById('reg-feedback');
 
@@ -322,16 +322,14 @@
 
       const { data, error } = await supabaseClient
         .from('tournament_registrations')
-        .insert([
-          {
-            sport: activeSport,
-            tournament_title: sportTitle,
-            team_name: team,
-            captain_name: captain,
-            whatsapp: phone,
-            ward: ward
-          }
-        ]);
+        .insert([{
+          sport: activeSport,
+          tournament_title: sportTitle,
+          team_name: team,
+          captain_name: captain,
+          whatsapp: phone,
+          ward: ward
+        }]);
 
       if (error) {
         feedback.innerText = `Registration failed: ${error.message}`;
@@ -342,7 +340,6 @@
         return;
       }
 
-      // Success
       feedback.innerText = 'Team successfully registered with club committee!';
       feedback.className = 'p-2.5 rounded-xl text-center text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200';
       
@@ -351,7 +348,6 @@
       submitBtn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> Submit Registration`;
       lucide.createIcons();
 
-      // Refresh registered teams list
       setTimeout(() => {
         closeRegisterModal();
         loadTeamsFromSupabase(activeSport);
