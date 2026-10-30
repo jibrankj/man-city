@@ -1,7 +1,7 @@
 {
   "name": "Man City Arts and Sports Club",
   "short_name": "Man City",
-  "start_url": "./index.html",
+  "start_url": "./home.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
